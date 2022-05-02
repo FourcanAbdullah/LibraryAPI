@@ -10,6 +10,8 @@ namespace Library.Models
 
         public List<Book> bookslist { get; set; } = new();
 
+        public List<Borrower> borrowerslist { get; set; } = new();
+
 
     }
 }

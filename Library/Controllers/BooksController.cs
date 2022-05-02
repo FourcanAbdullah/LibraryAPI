@@ -52,7 +52,7 @@ namespace Library.Controllers
             if (book != null)
             {
                 response.statusCode = 200;
-                response.statusDescription = "Status Ok, SHould recieve values";
+                response.statusDescription = "Status Ok, SHould recieve value";
                 response.bookslist.Add(book);
 
             }
@@ -65,11 +65,16 @@ namespace Library.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBook(int id, Book book)
         {
+            var response = new Response();
+
 
             if (id != book.BookId)
             {
+                
+                response.statusCode = 400;
+                response.statusDescription = "Not Found - Unsuccessful";
 
-                return BadRequest();
+                return Ok(response);
             }
 
             _context.Entry(book).State = EntityState.Modified;
@@ -77,20 +82,27 @@ namespace Library.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                response.statusCode = 200;
+                response.statusDescription = "Status Ok, SHould change values";
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!BookExists(id))
                 {
-                    return NotFound();
+                    response.statusCode = 400;
+                    response.statusDescription = "Not Found - Unsuccessful";
+
+                    return Ok(response);
                 }
                 else
                 {
+                    response.statusCode = 400;
+                    response.statusDescription = "Not Found - Unsuccessful";
                     throw;
                 }
             }
 
-            return NoContent();
+            return Ok(response);
         }
 
         // POST: api/Books
@@ -109,7 +121,7 @@ namespace Library.Controllers
             if (addedBook != null)
             {
                 response.statusCode = 200;
-                response.statusDescription = "Status Ok, SHould recieve values";
+                response.statusDescription = "Status Ok, SHould add values";
                 response.bookslist.Add(book);
 
             }
@@ -131,7 +143,7 @@ namespace Library.Controllers
             if (book != null)
             {
                 response.statusCode = 200;
-                response.statusDescription = "Status Ok, SHould recieve values";
+                response.statusDescription = "Status Ok, SHould delete the value";
                 response.bookslist.Add(book);
             }
 
